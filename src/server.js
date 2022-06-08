@@ -9,14 +9,13 @@ const port = process.env.port || 8000;
 
 const server = http.createServer(app);
 
+const startingServerPromise = startServer();
 async function startServer() {
   await connectMongo();
   server.listen(port, function () {
     console.log(`working on ${port}`);
   });
 }
-
-startServer();
 
 app.post("/exercises", async (req, res) => {
   try {
@@ -35,19 +34,19 @@ app.post("/exercises", async (req, res) => {
       month: updatedExercise.month, // month refers to the number of the month in a year
     });
     let monthExists = Boolean(Month.findOne({ monthNumber: day.month }));
-    console.log(monthExists);
+    // console.log(monthExists);
     if (monthExists) {
-      console.log("Month Exists");
+      // console.log("Month Exists");
       let existingMonth = await Month.findOne({ monthNumber: day.month });
       let loggedDays = existingMonth.loggedDays;
-      console.log(loggedDays);
+      // console.log(loggedDays);
       await loggedDays.push(day);
 
       let newMonth = await Month.findByIdAndUpdate(existingMonth._id, {
         loggedDays: loggedDays,
         numberOfLoggedDays: loggedDays.length,
       });
-      console.log(newMonth);
+      res.status(201).json("done");
     } else {
       let month = await Month.create({
         monthNumber: updatedExercise.month,
@@ -60,9 +59,9 @@ app.post("/exercises", async (req, res) => {
         loggedDays: newMonthArray,
         numberOfLoggedDays: newMonthArray.length,
       });
-      console.log(updateRes);
+      // console.log(updateRes);
 
-      res.json("Okay");
+      res.status(201).json("done");
     }
   } catch (err) {
     console.log(err);
@@ -74,11 +73,14 @@ app.get("/activedays/:month", async (req, res) => {
   const activeDays = await Day.find({ month: enteredMonth });
   const numberOfDays = activeDays.length;
   res.json(numberOfDays);
+  console.log(numberOfDays);
 });
 
 app.get("/highestMonth", async (req, res) => {
   const highestMonth = await Month.find({})
     .sort({ numberOfLoggedDays: -1 })
     .limit(1);
-  res.json(highestMonth);
+  res.json(highestMonth[0].monthNumber);
 });
+
+module.exports = startingServerPromise;

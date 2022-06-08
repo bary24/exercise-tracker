@@ -4,7 +4,7 @@
   "description": "Exercising app",
   "main": "server.js",
   "scripts": {
-    "test": "start"
+    "test": "mocha"
   },
   "author": "Ahmed Abdelbary",
   "license": "ISC",
@@ -13,5 +13,8 @@
     "mocha": "^10.0.0",
     "mongoose": "^6.3.6",
     "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "supertest": "^6.2.3"
   }
 }
