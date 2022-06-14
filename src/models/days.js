@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const daySchema = mongoose.Schema({
   number: {
     type: Number,
-    //add unique later
+    unique: true,
   },
   month: Number,
 });
