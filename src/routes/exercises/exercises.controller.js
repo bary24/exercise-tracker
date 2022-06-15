@@ -1,4 +1,4 @@
-const Exercise = require("../../models/exercises");
+const { Exercise } = require("../../models/exercises");
 const { Day } = require("../../models/days");
 const Month = require("../../models/months");
 async function submitExercise(req, res) {
