@@ -13,10 +13,12 @@ async function submitExercise(req, res) {
       },
       { new: true }
     );
+    let userId = await Math.floor(Math.random() * 100);
 
     let day = await Day.create({
       number: updatedExercise.day, // number refers to the number of the day in the month
       month: updatedExercise.month, // month refers to the number of the month in a year
+      userId: userId,
     });
 
     const foundMonth = await Month.findOneAndUpdate(

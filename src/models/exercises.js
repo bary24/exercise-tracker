@@ -17,12 +17,12 @@ const exerciseSchema = mongoose.Schema(
 );
 
 const Exercise = mongoose.model("Exercise", exerciseSchema);
+const schema = Joi.object({
+  exerciseName: Joi.string().min(3).required(),
+  hours: Joi.number().integer().max(4).required(),
+  minutes: Joi.number().integer().max(59),
+});
 const validateExercise = (exercise) => {
-  const schema = Joi.object({
-    exerciseName: Joi.string().min(3).required(),
-    hours: Joi.number().integer().max(4).required(),
-    minutes: Joi.number().integer().max(59),
-  });
   return schema.validate(exercise);
 };
 module.exports = { Exercise, validateExercise };
