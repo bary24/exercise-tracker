@@ -3,12 +3,13 @@ const bcrypt = require("bcrypt");
 function initialize(passport, getUserByUserName, getUserById) {
   const authenticateUser = async (username, password, done) => {
     const user = await getUserByUserName(username);
-
+    const enteredPassword = password.toString();
     if (user == null) {
       return done(null, false, { message: "No user found" });
     }
     try {
-      const match = await bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(enteredPassword, user.password);
+      console.log(match);
       if (match) {
         return done(null, user);
       } else {

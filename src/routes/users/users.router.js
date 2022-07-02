@@ -11,8 +11,11 @@ const {
   getLoginPage,
   postRegisterPage,
   logOutUser,
+  verifyToken,
+  createToken,
 } = require("./users.controller");
 const express = require("express");
+
 const usersRouter = express.Router();
 const passport = require("passport");
 const session = require("express-session");
@@ -35,13 +38,15 @@ usersRouter.get("/register", getRegisterPage);
 usersRouter.post(
   "/login",
   passport.authenticate("local", {
-    successRedirect: "/",
+    // successRedirect: "/",
     failureRedirect: "/login",
     failureMessage: true,
-  })
+  }),
+  createToken
 );
+
 usersRouter.post("/register", postRegisterPage);
-usersRouter.get("/", checkAuthenticated, getMainPage);
+usersRouter.post("/", checkAuthenticated, verifyToken, getMainPage);
 usersRouter.delete("/logout", logOutUser);
 
 module.exports = usersRouter;
